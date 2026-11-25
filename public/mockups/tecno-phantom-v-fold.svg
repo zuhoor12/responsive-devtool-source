@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="912" viewBox="0 0 800 912">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#232a33"/>
+      <stop offset="0.5" stop-color="#12161c"/>
+      <stop offset="1" stop-color="#0a0d11"/>
+    </linearGradient>
+  </defs>
+  <!-- Titanium body with a transparent screen hole (16,16 → 784,896) -->
+  <path fill="url(#body)" fill-rule="evenodd"
+    d="M36 0 H764 Q800 0 800 36 V876 Q800 912 764 912 H36 Q0 912 0 876 V36 Q0 0 36 0 Z
+       M40 16 H760 Q784 16 784 40 V872 Q784 896 760 896 H40 Q16 896 16 872 V40 Q16 16 40 16 Z"/>
+  <!-- Inner bezel edge -->
+  <rect x="17" y="17" width="766" height="878" rx="23" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1.5"/>
+  <!-- Fold crease down the middle -->
+  <line x1="399" y1="18" x2="399" y2="894" stroke="#ffffff" stroke-opacity="0.045" stroke-width="2"/>
+  <line x1="403" y1="18" x2="403" y2="894" stroke="#ffffff" stroke-opacity="0.025" stroke-width="1"/>
+  <!-- Under-display camera punch hole -->
+  <circle cx="400" cy="46" r="9.5" fill="#04060a"/>
+  <circle cx="400" cy="46" r="9.5" fill="none" stroke="#2b333d" stroke-width="1.5"/>
+  <circle cx="397.5" cy="43.5" r="2.5" fill="#1b2735"/>
+  <!-- Side buttons -->
+  <rect x="798" y="140" width="2.5" height="36" rx="1.25" fill="#3a434e"/>
+  <rect x="797" y="236" width="3.5" height="68" rx="1.75" fill="#414b56"/>
+  <!-- Outer highlight -->
+  <path fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1"
+    d="M36 0.75 H764 Q799.25 0.75 799.25 36 V876 Q799.25 911.25 764 911.25 H36 Q0.75 911.25 0.75 876 V36 Q0.75 0.75 36 0.75 Z"/>
+</svg>
