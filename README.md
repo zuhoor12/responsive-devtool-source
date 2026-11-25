@@ -1,72 +1,138 @@
 # Responsive DevTool
 
-افزونه‌ای برای بررسی وب‌سایت‌ها در اندازه‌های مختلف صفحه و دستگاه. رابط کاربری با React و Vite ساخته شده و پوشهٔ `dist` شامل خروجی جداگانهٔ Chrome و Firefox است.
+Responsive DevTool shows a website on many devices side by side, using the **real page**, so you can see how it looks and behaves on each screen before you publish it. It runs as a browser extension for **Chrome** and **Firefox**.
 
-## امکانات
+> ابزاری برای دیدن یک وب‌سایت روی ۵۸ دستگاه (گوشی، تبلت، لپ‌تاپ و مانیتور) به‌صورت هم‌زمان، با صفحه‌ی واقعی و نوار مرورگر واقعی. با بازرس، ممیزی دسترسی‌پذیری، لاگ شبکه، Color Picker و اسکرین‌شات.
 
-- پیش‌نمایش یک سایت در چند viewport و دستگاه
-- تغییر اندازه، چرخش و بزرگ‌نمایی viewport
-- ابزارهای توسعهٔ responsive، از جمله پنل‌های بازرسی و شبیه‌سازی
-- خروجی گرفتن از فریم‌ها و ابزارهای تصویری
-- پشتیبانی از ساخت‌های Chrome و Firefox
+![Multi view](docs/screenshots/1-multi-view.png)
 
-## نصب نسخهٔ توسعه
+## Features
 
-### Chrome
+**Devices**
+- 58 phones, tablets, laptops and desktop screens, from iPhone SE to 4K monitors.
+- Single view for one device, or Multi view to compare several devices in one window.
+- Rotate devices, set any width and height, and add your own custom device.
+- Each device shows the page with the browser UI around it: Safari on iPhone and iPad, Chrome on Android, Chrome on Windows and on macOS.
+- Scroll each device on its own, or sync scrolling across devices.
 
-1. در پوشهٔ پروژه اجرا کنید: `npm ci`
-2. ساخت افزونه‌ها را اجرا کنید: `npm run build`
-3. در Chrome به `chrome://extensions` بروید و **Developer mode** را روشن کنید.
-4. **Load unpacked** را بزنید و پوشهٔ `dist/chrome` را انتخاب کنید.
+**Inspector**
+- DOM tree: click an element to select it, or hover to highlight it on the page.
+- Computed CSS, box model, element size, colour and font.
+- Breakpoint ruler and an overflow check (elements wider than the screen).
+- Accessibility audit: colour contrast, headings, image alt text, keyboard order, focus, button and link names, form labels.
+- Network log of requests for each device, with status, size and time.
 
-### Firefox
+**Colour picker**
+- Hover an element to see its colour: the text colour for text, the background colour otherwise.
+- Click to pick it. Copy as HEX or RGB; HSL and OKLCH are shown too.
+- Lists the colours used on the page.
 
-1. در پوشهٔ پروژه اجرا کنید: `npm ci`
-2. ساخت افزونه‌ها را اجرا کنید: `npm run build`
-3. به `about:debugging#/runtime/this-firefox` بروید.
-4. **Load Temporary Add-on** را بزنید و `dist/firefox/manifest.json` را انتخاب کنید.
+**Other**
+- Screenshots of a device, or of all devices at once, and copying to the clipboard.
+- A QR code to open the same page on a real phone.
+- Keyboard shortcuts (`Ctrl+K` opens the command palette).
 
-افزونهٔ موقت Firefox پس از بسته‌شدن مرورگر حذف می‌شود. برای انتشار عمومی باید بسته از مسیر رسمی Mozilla امضا شود.
+## Browser support
 
-## ساخت و بسته‌بندی
+| Feature | Chrome / Edge | Firefox |
+|---|:---:|:---:|
+| Device preview, Multi view, browser UI | ✅ | ✅ |
+| Inspector, accessibility audit, colour picker | ✅ | ✅ |
+| Network log | ✅ | ✅ |
+| Viewport screenshots | ✅ | ✅ |
+| Network throttling (Slow 3G, Fast 3G, 4G, Offline, custom) | ✅ | ❌ |
+| Full-page screenshots, 2x / 3x screenshots | ✅ | ❌ |
+| Touch, dark mode and reduced-motion emulation | ✅ | ❌ |
 
-```sh
+The features marked ❌ use the DevTools protocol (`chrome.debugger`), which Firefox does not provide to extensions.
+
+## Install
+
+### From a release
+Download the zip from the [GitHub Releases](https://github.com/zuhoor12) page and install it:
+- **Chrome / Edge:** open `chrome://extensions`, turn on *Developer mode*, choose *Load unpacked* and pick the unpacked folder. (Or unzip the release and load that folder.)
+- **Firefox:** open `about:debugging#/runtime/this-firefox` and choose *Load Temporary Add-on*, then pick `manifest.json` from the unpacked folder.
+
+### From source
+Requires Node.js 20 or newer.
+
+```bash
 npm ci
-npm run build
-npm run package
+npm run build           # Chrome and Firefox  -> dist/chrome and dist/firefox
+npm run build:chrome    # only Chrome
+npm run build:firefox   # only Firefox
+npm run package         # builds both and creates the zips in releases/
 ```
 
-`npm run build` پوشه‌های `dist/chrome` و `dist/firefox` را می‌سازد. `npm run package` همان خروجی‌ها را در `releases/` به صورت ZIP قابل نصب بسته‌بندی می‌کند و یکپارچگی آرشیوها را بررسی می‌کند.
+To rebuild while you edit: `npm run watch:chrome` or `npm run watch:firefox`.
 
-## مجوزها
+## Test your website on a real phone
 
-Manifestها مجوزهای `activeTab`, `scripting`, `webNavigation`, `webRequest`, `declarativeNetRequest`, `storage` و `clipboardWrite` را درخواست می‌کنند؛ Chrome مجوز اختیاری `debugger` را نیز تعریف می‌کند. مجوزهای host برای کار روی سایت‌های مختلف گسترده هستند. فقط مجوزهایی را تأیید کنید که برای استفاده از افزونه لازم دارید.
+Your phone cannot open `localhost` on your computer. So the development server of **your website** must listen on your network, and the tool must use your computer's network address.
 
-## محدودیت‌های این بسته
+1. In the project of **your website** (not this repository), start the dev server so that it listens on the network:
 
-- پیش‌نمایش سه‌بعدی در نسخهٔ فعلی وجود ندارد؛ رابط و کد مربوط به آن حذف شده‌اند.
-- اطلاعات مجوز و منبع تصاویر دستگاه در `public/mockups/` در منبع پروژه ثبت نشده است؛ پیش از انتشار عمومی، حق استفاده و انتساب آن‌ها را بررسی کنید.
-- خروجی ZIP ساخته و صحت ساختاری آن بررسی می‌شود؛ امضای فروشگاه‌ها، انتشار در فروشگاه، و آزمون نصب نهایی از طریق فروشگاه انجام نشده‌اند.
+   ```bash
+   npm run dev -- --host
+   ```
 
-## توسعه
+   This works with Vite projects. For other frameworks the flag differs, for example `HOST=0.0.0.0 npm start` (Create React App) or `next dev -H 0.0.0.0` (Next.js).
 
-کد رابط در `src/app`، منطق افزونه در `src/core`, `src/content` و `src/background`، و manifestها در `manifests/` هستند. برای بازسازی فایل‌ها از `package-lock.json` استفاده کنید تا نسخه‌های نصب‌شده قابل تکرار باشند.
+2. In the terminal, find the **Network** address of your computer. It is printed by the dev server, for example `http://192.168.1.25:5173/`. Keep the part after `http://`, which is `192.168.1.25:5173`.
 
-## نمای مرورگر داخل قاب
+3. Open Responsive DevTool, load `http://localhost:5173/` and click the phone icon at the top (or *Test on a real phone* in `Ctrl+K`).
 
-صفحه‌ی زنده داخل یک نوار مرورگر واقعی‌نما نمایش داده می‌شود: Chrome برای اندروید، Safari برای آیفون و iPad، Chrome با نوار وظیفه‌ی Windows برای دستگاه‌های معمولی، و Chrome با نوار منو و Dock برای MacBook. صفحه فقط فضای زیر نوارها را می‌گیرد، مثل مرورگر واقعی. برای جزئیات، `PROGRESS.md` را ببینید.
+4. In the box that appears, enter the network address from step 2. The QR code changes to that address.
 
-دکمه‌های برگشت، جلو و reload داخل نوارها فقط صفحه‌ی همان دستگاه را کنترل می‌کنند. آدرس تایپ‌پذیر نیست؛ برای تغییر صفحه از فیلد آدرس بالای برنامه استفاده کنید.
+5. Connect your phone to the **same Wi-Fi** as your computer, and scan the QR code with the phone's camera.
 
-## سورس کد و سازنده
+If the page does not open on the phone, check that your firewall allows the port (for example 5173), and that the phone is not on a guest network or a VPN.
 
-- سازنده و نگهدارنده: **zuhoor12**
-- سورس کد: https://github.com/zuhoor12
+## How it works
 
-## تست روی گوشی واقعی (QR)
+The tool has three parts, all in this repository:
 
-دکمه‌ی گوشی در نوار بالا (یا دستور «Test on a real phone» در Ctrl+K) یک QR کد برای صفحه‌ی فعلی نشون می‌ده. گوشی با دوربینش اسکن می‌کنه و صفحه رو در اندازه و با لمس واقعی خودش باز می‌کنه.
+| Folder | What it does |
+|---|---|
+| `src/app/` | The viewer page (React + Tailwind CSS, built with Vite): device frames, panels, dialogs. |
+| `src/content/` | The page agent. It is injected into each device frame and handles the inspector, colour sampling and the accessibility audit. |
+| `src/background/` | The background script. It allows the viewer to frame websites (it removes `X-Frame-Options` and CSP framing headers for the viewer's own tab only), logs network requests, and attaches the debugger for the Chrome-only features. |
+| `src/core/` | The messaging layer between the viewer and the page agent (the `rdt` API). |
+| `manifests/` | `manifest.chrome.json` and `manifest.firefox.json`. |
+| `public/` | Device frame images and icons. |
 
-- برای سایت‌های عمومی، QR همان آدرس صفحه است.
-- برای آدرس‌های محلی (`localhost`)، گوشی به کامپیوتر شما دسترسی نداره. آدرس شبکه‌ی کامپیوتر را وارد کنید (مثلاً `192.168.1.20:5173`) و مطمئن شوید گوشی و کامپیوتر روی یک Wi-Fi هستند و سرور توسعه روی شبکه گوش می‌دهد (مثلاً با `--host`).
+Device data is in `src/app/lib/devices.js`. To add a device, add an entry there and, if it needs a frame, add an image in `public/mockups/`.
 
+## Permissions
+
+- `<all_urls>` and `scripting`: show and inspect any site the user chooses to preview.
+- `webRequest` and `declarativeNetRequest`: log requests, and remove framing headers for the viewer tab only.
+- `storage`: save settings on the user's computer.
+- `clipboardWrite`: copy screenshots and colours.
+- `debugger` (Chrome only): throttling, touch and full-page screenshots.
+
+## Privacy
+
+Responsive DevTool does not collect or send any data to a server. Settings are stored on your computer only. Pages are loaded by your browser, just as in any other tab.
+
+## Limitations
+
+- The address bar in the device frames is for display only. Use the address field at the top of the tool to change the page.
+- Some sites detect that they are inside a frame and behave differently. The tool removes the framing headers, but it cannot stop a site's own scripts from breaking out of a frame.
+- Testing on a real phone needs the phone and the computer on the same network. See [Test your website on a real phone](#test-your-website-on-a-real-phone).
+
+## Contributing
+
+Issues and pull requests are welcome. Before you open a pull request, please run `npm run build` and check that both builds finish without errors.
+
+## Credits
+
+Third-party libraries and their licences are listed in [CREDITS.md](CREDITS.md). The project changelog and progress notes are in [PROGRESS.md](PROGRESS.md).
+
+## License
+
+MIT. See [LICENSE](LICENSE).
+
+## Author
+
+Made by [zuhoor12](https://github.com/zuhoor12).
